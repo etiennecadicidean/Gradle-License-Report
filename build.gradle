@@ -45,16 +45,32 @@ test {
     outputs.upToDateWhen { false }
 }
 
-// local maven publishing to ease development
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId 'com.github.jk1.dependency-license-report'
-            artifactId 'com.github.jk1.dependency-license-report.gradle.plugin'
-            from components.java
+deployRelease {
+    repositories {
+        mavenDeployer {
+            repository(url: releasesRepoUrl) {
+                authentication(userName: releasesRepoUsername, password: releasesRepoPassword)
+                pom.groupId = "com.github.jk1"
+                pom.artifactId = "dependency-license-report"
+                pom.version = "2.0.1"
+            }
         }
     }
 }
+
+deploySnapshot {
+    repositories {
+        mavenDeployer {
+            repository(url: snapshotsRepoUrl) {
+                authentication(userName: snapshotsRepoUsername, password: snapshotsRepoPassword)
+                pom.groupId = "com.github.jk1"
+                pom.artifactId = "dependency-license-report"
+                pom.version = "2.0.1-SNAPSHOT"
+            }
+        }
+    }
+}
+
 
 // release publishing to gradle plugin repo
 pluginBundle {
