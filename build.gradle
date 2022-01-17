@@ -45,31 +45,27 @@ test {
     outputs.upToDateWhen { false }
 }
 
-deployRelease {
-    repositories {
-        mavenDeployer {
-            repository(url: releasesRepoUrl) {
-                authentication(userName: releasesRepoUsername, password: releasesRepoPassword)
-                pom.groupId = "com.github.jk1"
-                pom.artifactId = "dependency-license-report"
-                pom.version = "2.0.1"
+
+
+publishing {
+     publications {
+            gradleLicenseReport(MavenPublication) {
+                from components.java
             }
-        }
+     }
+
+    repositories {
+        maven {
+            url = releasesRepoUrl
+            name = "frogNexus"
+            credentials {
+                username = releasesRepoUsername
+                password = releasesRepoPassword
+            }
+         }
     }
 }
 
-deploySnapshot {
-    repositories {
-        mavenDeployer {
-            repository(url: snapshotsRepoUrl) {
-                authentication(userName: snapshotsRepoUsername, password: snapshotsRepoPassword)
-                pom.groupId = "com.github.jk1"
-                pom.artifactId = "dependency-license-report"
-                pom.version = "2.0.1-SNAPSHOT"
-            }
-        }
-    }
-}
 
 
 // release publishing to gradle plugin repo
